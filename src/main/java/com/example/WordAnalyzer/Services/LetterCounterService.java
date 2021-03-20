@@ -1,5 +1,6 @@
 package com.example.WordAnalyzer.Services;
 
+import com.example.WordAnalyzer.Data.LettersCountResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,9 @@ import java.util.HashMap;
 @Service
 public class LetterCounterService {
 
-    public static JSONObject parse(String word) throws JSONException {
+    public static LettersCountResponse parse(String word) {
         int max =0;
-        String res = null;
+        var res = '\0';
         HashMap<Character,Integer>map = new HashMap<>();
         String lowerCaseWord = word.toLowerCase();
 
@@ -20,14 +21,10 @@ public class LetterCounterService {
             map.compute(ch,(key,val) -> val == null ? 1 :val+1);
             int val = map.get(ch);
             if (val>max){
-                res = String.valueOf(ch);
+                res = ch;
                 max = val;
             }
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("letter",res);
-        jsonObject.put("count",max);
-
-        return jsonObject;
+        return new LettersCountResponse(res, max);
     }
 }
